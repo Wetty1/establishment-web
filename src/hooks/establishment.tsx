@@ -5,6 +5,10 @@ import { useAuth } from './auth';
 
 export interface IEstablishment {
     userid: string;
+    user?: {
+        id: string;
+        name: string;
+    }
     address: string;
     neighborhood: string;
     city: string;

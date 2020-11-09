@@ -51,6 +51,9 @@ export const Content = styled.div`
             margin: 1px;
         }
 
+        label {
+            color: #fff;
+        }
 
         button {
             margin: 8px auto;
