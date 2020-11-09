@@ -23,10 +23,18 @@ export interface ICreateNewEstablishment {
     type: string;
 }
 
+export interface IFilters {
+    city: string[];
+    neighborhood: string[];
+    type: string[];
+}
+
 interface EstablishmentContextData {
-    getAllEstablishment(): Promise<IEstablishment[]>;
+    filters: IFilters;
+    getAllEstablishment(queryParams: string): Promise<IEstablishment[]>;
     createEstablishment(newEstablishment: ICreateNewEstablishment): Promise<IEstablishment>;
     deleteEstablishment(id: string): Promise<IEstablishment>;
+    getAllFilters(): Promise<IFilters>;
 }
 
 const EstablishmentContext = createContext<EstablishmentContextData>({} as EstablishmentContextData);
@@ -34,14 +42,20 @@ const EstablishmentContext = createContext<EstablishmentContextData>({} as Estab
 const EstablishmentProvider: React.FC = ({ children }) => {
     const { token } = useAuth();
 
-    const getAllEstablishment = useCallback(async () => {
-        const { data } = await api.get<IEstablishment[]>('/establishments', {
+    const [filters, setFilters] = useState<IFilters>({
+        city: [],
+        neighborhood: [],
+        type: [],
+    })
+
+    const getAllEstablishment = useCallback(async (queryParams:string) => {
+        const { data } = await api.get<IEstablishment[]>(`/establishments${queryParams}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
 
-        console.log(data);
+        console.log(data, queryParams)
 
         return data;
     }, [token]);
@@ -66,12 +80,26 @@ const EstablishmentProvider: React.FC = ({ children }) => {
         return data;
     }, [token]);
 
+    const getAllFilters = useCallback(async () => {
+        const { data } = await api.get<IFilters>('/establishments/filters', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        setFilters(data);
+        console.log(data);
+
+        return data;
+    }, [token]);
+
     return (
         <EstablishmentContext.Provider
             value={{
+               filters,
                createEstablishment,
                deleteEstablishment,
                getAllEstablishment,
+               getAllFilters,
             }}
         >
             {children}

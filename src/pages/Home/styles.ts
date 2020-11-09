@@ -79,6 +79,24 @@ export const SideBar = styled.div`
     background-color: #f4f4f4;
     color: #691dbc;
     box-shadow: 3px 2px 5px 1px #2222;
+
+    form {
+        padding: 20px;
+
+        > div {
+            margin: 5px;
+
+            div {
+                margin: 5px 0;
+            }
+        }
+
+        button {
+            width: 120px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    }
 `;
 
 export const Perfil = styled.div`
