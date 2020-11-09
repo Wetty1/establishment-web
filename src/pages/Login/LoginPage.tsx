@@ -10,7 +10,7 @@ import getValidateErrors from "../../utils/getValidateErrors";
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { useAuth, SignInCredentials } from '../../hooks/auth';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const LoginPage: React.FC = () =>{ 
     const formRef = useRef<FormHandles>(null);
@@ -60,7 +60,7 @@ const LoginPage: React.FC = () =>{
                 <Button type="submit">
                     Entrar
                 </Button>
-                <a href="#1">Cadastrar-se</a>
+                <Link to="/register">Cadastrar-se</Link>
             </Form>
         </Content>
     </Container>

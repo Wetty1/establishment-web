@@ -31,7 +31,7 @@ export const Header = styled.div`
 
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     text-decoration: none;
 `;
@@ -45,6 +45,7 @@ export const InputSearch = styled.div`
     flex-direction: row;
     justify-content: stretch;
     align-items: center;
+    margin-left: 50px;
 
     svg {
         color: #691dbc;
@@ -81,4 +82,44 @@ export const SideBar = styled.div`
 `;
 
 export const Perfil = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: 30px;
+    position: relative;
+
+    div { 
+        background-color: #691dbc;
+        color: #fff;
+        padding: 10px 15px;
+        position: absolute;
+        opacity: 0;
+        width: 120px;
+        border-radius: 15px;
+        top: 0px;
+        right: -5px;
+        max-width: 30px;
+        transition: all 250ms ease-in-out;
+
+        span {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        &:hover {
+            min-width: 130px;
+            opacity: 1;
+
+        }
+    }
+
+    > span {
+        color: #691dbcaa;
+    }
+
+    > p{
+        color: #691dbc;
+        font-size: 18px;
+        font-weight: 500;
+    }
 `

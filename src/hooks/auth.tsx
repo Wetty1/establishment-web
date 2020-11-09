@@ -7,11 +7,11 @@ export interface SignInCredentials {
     password: string;
 }
 
-interface SignUpCredentials {
+export interface SignUpCredentials {
     name: string;
     login: string;
     password: string;
-    level: number;
+    level: boolean;
 }
 
 interface AuthState {
@@ -63,7 +63,17 @@ const AuthProvider: React.FC = ({ children }) => {
     }, []);
 
     const signUp = useCallback(async ({login, password, level, name}: SignUpCredentials) => {
-        await api.post('/register', );
+        const levelN = level ? 1 : 0;
+        
+
+        const newUser = await api.post('/register', {
+            login,
+            password,
+            name,
+            level: levelN,
+        });
+
+        console.log(newUser);
     }, []);
 
     const signOut = useCallback(() => {

@@ -1,25 +1,40 @@
-import React, { Children, useEffect, useState } from 'react';
+import React, { Children, useCallback, useEffect, useState } from 'react';
 import { Container, Content, Header,InputSearch, Button, Perfil, SideBar } from './styles';
 import { MdSearch, MdAddLocation } from "react-icons/md";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import GoogleMapReact from 'google-map-react'
 import MapMarker from './Marker';
 import { useEstablishment, IEstablishment } from '../../hooks/establishment';
 import { number } from 'yup';
+import { useAuth } from '../../hooks/auth';
 
 const HomePage: React.FC = () => {
     const { getAllEstablishment, } = useEstablishment() 
     const [locations, setLocations] = useState<IEstablishment[]>([])
-
+    const { user, signOut } = useAuth();
+    const history = useHistory()
+    
     useEffect(() => {
         const fetchData = async () => {
+            if(!user) {
+                history.push('/')
+            }
             const establishments = await getAllEstablishment();
             setLocations(establishments);
         }
 
         fetchData();
     }, [getAllEstablishment])
+
+    const handleLogOut = useCallback(
+        () => {
+            signOut();
+
+            history.push('/')
+        },
+        [signOut],
+    ) 
     
     return (
     <Container>
@@ -28,10 +43,20 @@ const HomePage: React.FC = () => {
                 <MdSearch size={26} />
                 <input type="text"/>
             </InputSearch>
-            <Link to="/new-establishment">
-                <Button type="button" ><MdAddLocation size={18} /> <span>Novo Estabelecimento</span></Button>
-            </Link>
-            <Perfil></Perfil>
+            {user.level === 1 && (
+                <Link to="/new-establishment">
+                    <Button type="button" ><MdAddLocation size={18} /> <span>Novo Estabelecimento</span></Button>
+                </Link>
+            )}
+            <Perfil>
+                <p>{user.name}</p>
+                <span>{user.level === 1 ? 'parceiro' : 'cliente'}</span>
+                <div>
+                    <span onClick={handleLogOut}>
+                        sair
+                    </span>
+                </div>
+            </Perfil>
         </Header>
         <Content>
             <SideBar>a</SideBar>
